@@ -1,3 +1,4 @@
 node_modules/
 haters/
 .DS_Store
+.next/
