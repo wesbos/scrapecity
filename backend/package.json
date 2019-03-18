@@ -12,9 +12,11 @@
     "axios": "^0.18.0",
     "body-parser": "^1.18.3",
     "cheerio": "^1.0.0-rc.2",
+    "cors": "^2.8.5",
     "esm": "^3.2.17",
     "express": "^4.16.4",
     "lowdb": "^1.0.0",
+    "next": "^8.0.4-canary.11",
     "node-cron": "^2.0.3",
     "waait": "^1.0.4"
   },
