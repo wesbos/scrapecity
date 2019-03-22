@@ -11,7 +11,7 @@ function useScrapes() {
   });
   // fetch function
   async function fetchScrapes() {
-    const res = await fetch('http://localhost:2093/data');
+    const res = await fetch(`http://localhost:2093/data`);
     const data = await res.json();
     setScrapes(data);
   }

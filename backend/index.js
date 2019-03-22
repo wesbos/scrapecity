@@ -8,8 +8,8 @@ import './lib/cron';
 const app = express();
 app.use(cors());
 
-app.get('/scrape', async (req, res, next) => {
-  console.log('Scraping!!');
+app.get(`/scrape`, async (req, res, next) => {
+  console.log(`Scraping!!`);
   const [iCount, tCount] = await Promise.all([
     getInstagramCount(),
     getTwitterCount(),
@@ -17,7 +17,7 @@ app.get('/scrape', async (req, res, next) => {
   res.json({ iCount, tCount });
 });
 
-app.get('/data', async (req, res, next) => {
+app.get(`/data`, async (req, res, next) => {
   // get the scrape data
   const { twitter, instagram } = db.value();
   // filter for only unique values
