@@ -1,0 +1,12 @@
+{
+  "extends": [
+    "wesbos"
+  ],
+  "rules": {
+    "no-unused-vars": 2,
+    "quotes": [
+      "error",
+      "backtick"
+    ]
+  }
+}
