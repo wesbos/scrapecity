@@ -4,6 +4,7 @@ import { uniqueCount } from './lib/utils';
 import { getInstagramCount, getTwitterCount } from './lib/scraper';
 import db from './lib/db';
 import './lib/cron';
+import aggregate from './lib/aggregate';
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,17 @@ app.get(`/data`, async (req, res, next) => {
   const uniqueInstagram = uniqueCount(instagram);
   // respond with json
   res.json({ twitter: unqiueTwitter, instagram: uniqueInstagram });
+});
+
+app.get(`/aggregate`, async (req, res, next) => {
+  // get the scrape data
+  const { twitter, instagram } = db.value();
+  // filter for only unique values
+  const unqiueTwitter = uniqueCount(twitter);
+  const uniqueInstagram = uniqueCount(instagram);
+  // need to aggregate these values.
+  // respond with json
+  res.json({ twitter: aggregate(twitter), instagram: aggregate(instagram) });
 });
 
 app.listen(2093, () => {

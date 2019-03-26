@@ -1,7 +1,6 @@
 import { distanceInWords } from 'date-fns';
 
 export default function Table({ scrapes }) {
-  const scrapesReversed = [...scrapes].reverse();
   return (
     <table>
       <thead>
@@ -11,7 +10,7 @@ export default function Table({ scrapes }) {
         </tr>
       </thead>
       <tbody>
-        {scrapesReversed.map(scrape => (
+        {scrapes.map(scrape => (
           <tr key={scrape.date}>
             <td>{scrape.count}</td>
             <td>{distanceInWords(new Date(scrape.date), new Date())}</td>
