@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import { ScrapeProvider } from './ScrapeContext';
+import GlobalStyles from './styles/GlobalStyles';
 
 // Custom Hook!
 function useScrapes() {
@@ -26,7 +27,10 @@ export default function Page({ children }) {
   const hookInfo = useScrapes();
   return (
     <ScrapeProvider value={hookInfo}>
-      <div className="page">{children}</div>
+      <div className="page">
+        <GlobalStyles />
+        {children}
+      </div>
     </ScrapeProvider>
   );
 }

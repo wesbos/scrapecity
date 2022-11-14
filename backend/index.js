@@ -1,10 +1,10 @@
 import express from 'express';
 import cors from 'cors';
-import { uniqueCount } from './lib/utils';
-import { getInstagramCount, getTwitterCount } from './lib/scraper';
-import db from './lib/db';
-import './lib/cron';
-import aggregate from './lib/aggregate';
+import { uniqueCount } from './lib/utils.js';
+import { getInstagramCount, getTwitterCount } from './lib/scraper.js';
+import db from './lib/db.js';
+import './lib/cron.js';
+import aggregate from './lib/aggregate.js';
 
 const app = express();
 app.use(cors());

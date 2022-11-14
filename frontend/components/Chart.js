@@ -32,7 +32,7 @@ export default class Example extends PureComponent {
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="date" />
-        <YAxis domain={['dataMin', 'dataMax']} />
+        <YAxis domain={[`dataMin`, `dataMax`]} />
         <Tooltip />
         <Legend />
         <Line

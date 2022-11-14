@@ -1,9 +1,11 @@
 // Setup the DB
-import low from 'lowdb';
-import FileSync from 'lowdb/adapters/FileSync';
+import { Low } from 'lowdb';
+import { JSONFile } from 'lowdb/node';
 
-const adapter = new FileSync('db.json');
-const db = low(adapter);
-db.defaults({ twitter: [], instagram: [] }).write();
+const adapter = new JSONFile('db.json');
+const db = new Low(adapter);
+await db.read();
+db.data = db.data || { twitter: [], instagram: [] }
+db.write();
 
 export default db;

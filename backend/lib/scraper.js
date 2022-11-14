@@ -1,6 +1,6 @@
 import axios from 'axios';
-import cheerio from 'cheerio';
-import db from './db';
+import { load } from 'cheerio';
+import db from './db.js';
 
 export async function getHTML(url) {
   const { data: html } = await axios.get(url);
@@ -8,15 +8,21 @@ export async function getHTML(url) {
 }
 
 export async function getTwitterFollowers(html) {
-  // load up cheerio
-  const $ = cheerio.load(html);
-  const span = $('[data-nav="followers"] .ProfileNav-value');
-  return span.data('count');
+  // Regex follower count in
+  // const regex = new RegExp(`"followers_count":([0-9]*)`);
+  // const result = regex.exec(html);
+  // console.log(result)
+  // return parseInt(countAsString);
+  // // load up cheerio
+  const $ = load(html);
+  const span = $('.profile-stat-num');
+  const count = $(span[2]).text().replace(',','');
+  return parseInt(count);
 }
 
 export async function getInstagramFollowers(html) {
   // load up Cheerio
-  const $ = cheerio.load(html);
+  const $ = load(html);
   const dataInString = $('script[type="application/ld+json"]').html();
   const pageObject = JSON.parse(dataInString);
   return parseInt(
@@ -30,27 +36,32 @@ export async function getInstagramCount() {
   return instagramCount;
 }
 export async function getTwitterCount() {
-  const html = await getHTML('https://twitter.com/wesbos');
+  const html = await getHTML('https://nitter.net/wesbos');
   const twitterCount = await getTwitterFollowers(html);
   return twitterCount;
 }
 
 export async function runCron() {
-  const [iCount, tCount] = await Promise.all([
-    getInstagramCount(),
+  const [/* iCount, */tCount] = await Promise.all([
+    // getInstagramCount(),
     getTwitterCount(),
   ]);
-  db.get('twitter')
-    .push({
-      date: Date.now(),
-      count: tCount,
-    })
-    .write();
-  db.get('instagram')
-    .push({
-      date: Date.now(),
-      count: iCount,
-    })
-    .write();
-  console.log('Done!');
+
+  console.log(tCount);
+
+  // db.data.twitter
+  //   .push({
+  //     date: Date.now(),
+  //     count: tCount,
+  //   });
+  // await db.write();
+  // db.data.instagram
+  //   .push({
+  //     date: Date.now(),
+  //     count: iCount,
+  //   })
+  //   .write();
+  // console.log('Done!');
 }
+
+runCron();
