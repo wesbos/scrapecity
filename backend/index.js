@@ -1,5 +1,6 @@
-import express from 'express';
-import cors from 'cors';
+import express from 'npm:express';
+import cors from 'npm:cors';
+import ms from 'npm:ms';
 import { uniqueCount } from './lib/utils.js';
 import { getInstagramCount, getTwitterCount } from './lib/scraper.js';
 import db from './lib/db.js';
@@ -20,7 +21,9 @@ app.get(`/scrape`, async (req, res, next) => {
 
 app.get(`/data`, async (req, res, next) => {
   // get the scrape data
-  const { twitter, instagram } = db.value();
+
+  const { twitter, instagram } = db.data;
+  console.log(twitter)
   // filter for only unique values
   const unqiueTwitter = uniqueCount(twitter);
   const uniqueInstagram = uniqueCount(instagram);
@@ -39,6 +42,28 @@ app.get(`/aggregate`, async (req, res, next) => {
   res.json({ twitter: aggregate(twitter), instagram: aggregate(instagram) });
 });
 
+app.get('/incremental', async (req, res) => {
+  const now = Date.now();
+  const threeDays = 1000 * 60 * 60 * 24 * 3;
+  const twitter = db.data.twitter.slice(3500).filter((tweet) => tweet.date > now - threeDays);
+
+  const html = /*html*/`<ul>
+    ${twitter.map(function(tweet, index) {
+      const diffTime = Math.round((now - tweet.date) / 1000 / 60 / 60);
+      const diffCount = tweet.count - twitter[index - 1]?.count;
+      if(diffCount === 0) return '';
+      return `<li
+        style="color: ${diffCount > 0 ? 'green' : 'red'}"
+      >${diffCount > 0 ? '+' : ''}${diffCount} (${diffTime} h)</li>`
+    }).join('')}
+  </ul>`;
+
+  res.send(html)
+
+});
+
 app.listen(2093, () => {
   console.log(`Example App running on port http://localhost:2093`);
 });
+
+
